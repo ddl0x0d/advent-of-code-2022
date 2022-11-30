@@ -13,11 +13,14 @@ val kotestVersion: String by project
 
 dependencies {
     implementation(platform(kotlin("bom")))
-    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib-jdk8"))
 
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation(kotest("runner-junit5"))
+    testImplementation(kotest("assertions-core"))
+    testImplementation(kotest("framework-datatest"))
 }
+
+fun kotest(module: String) = "io.kotest:kotest-$module:$kotestVersion"
 
 application {
     mainClass.set("aoc2022.AppKt")
