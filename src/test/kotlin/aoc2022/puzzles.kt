@@ -16,7 +16,7 @@ data class TestCase<T>(val day: Int, val puzzle: Puzzle<*, T>, val part1: T, val
 class PuzzleTests : StringSpec({
     withData(
         listOf(
-            TestCase(1, Day1, 7, 5),
+            TestCase(1, Day1, 24_000, 45_000),
         )
     ) { (day, puzzle, answer1, answer2) ->
         val path = Path(EXAMPLE_DIRECTORY) / EXAMPLE_FORMAT.format(day)
