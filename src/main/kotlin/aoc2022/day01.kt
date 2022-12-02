@@ -5,7 +5,7 @@ package aoc2022
  */
 object Day1 : Puzzle<List<Int>, Int> {
 
-    override val name = "🍎 Calorie Counting"
+    override val name = "🍎🍐🍇 Calorie Counting"
 
     /**
      * List of calories per elf
