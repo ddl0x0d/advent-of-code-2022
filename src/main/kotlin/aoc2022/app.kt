@@ -6,7 +6,7 @@ import kotlin.io.path.div
 const val EXAMPLE_DIRECTORY = "examples"
 const val EXAMPLE_FORMAT = "day-%02d.txt"
 
-val puzzles = listOf(Day1, Day2)
+val puzzles = listOf(Day1, Day2, Day3)
 
 fun main() {
     println("🎄 Advent of Code 2022 🎄\n")
