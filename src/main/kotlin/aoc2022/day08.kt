@@ -40,16 +40,17 @@ object Day8 : Puzzle<Grid<Int>, Int> {
 
     private fun Grid<Int>.interiorTreePoints(): List<Point> =
         slice(1 until rows - 1, 1 until cols - 1)
-            .flatten { row, col -> Point(row + 1 to col + 1) }
+            .flatten { row, col -> Point(col + 1, row + 1) }
 
     private fun Grid<Int>.treesToEdge(start: Point, direction: Direction): Sequence<Int> {
         val treesLeft = when (direction) {
-            TOP -> start.row
-            RIGHT -> cols - start.col - 1
-            BOTTOM -> rows - start.row - 1
-            LEFT -> start.col
+            UP -> start.y
+            RIGHT -> cols - start.x - 1
+            DOWN -> rows - start.y - 1
+            LEFT -> start.x
         }
-        return generateSequence(start) { it + direction.point }.drop(1).take(treesLeft).map(::get)
+        val vector = Point(direction.x, -direction.y)
+        return generateSequence(start) { it + vector }.drop(1).take(treesLeft).map(::get)
     }
 
     private fun Sequence<Int>.viewingDistance(tree: Int): Int =

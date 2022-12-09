@@ -5,7 +5,7 @@ class Grid<T>(private val cells: List<List<T>>) {
     val cols = cells.first().size
 
     operator fun get(row: Int): List<T> = cells[row]
-    operator fun get(point: Point): T = cells[point.row][point.col]
+    operator fun get(point: Point): T = cells[point.y][point.x]
 
     companion object {
         fun <T> from(lines: List<String>, toCell: (Char) -> T): Grid<T> =
@@ -13,24 +13,25 @@ class Grid<T>(private val cells: List<List<T>>) {
     }
 }
 
-@JvmInline
-value class Point(private val pair: Pair<Int, Int>) {
-    val row: Int get() = pair.first
-    val col: Int get() = pair.second
+data class Point(val x: Int, val y: Int) {
 
-    operator fun component1() = row
-    operator fun component2() = col
+    operator fun plus(other: Point) = Point(x + other.x, y + other.y)
+    operator fun minus(other: Point) = Point(x - other.x, y - other.y)
 
-    operator fun plus(other: Point) = Point(row + other.row to col + other.col)
+    fun map(transform: (Int) -> Int) = Point(transform(x), transform(y))
+
+    companion object {
+        val ZERO = Point(0, 0)
+    }
 }
 
-enum class Direction(row: Int, col: Int) {
-    TOP(-1, 0),
-    RIGHT(0, 1),
-    BOTTOM(1, 0),
-    LEFT(0, -1);
+enum class Direction(val x: Int, val y: Int) {
+    UP(0, 1),
+    RIGHT(1, 0),
+    DOWN(0, -1),
+    LEFT(-1, 0);
 
-    val point = Point(row to col)
+    val point = Point(x, y)
 }
 
 fun <T, U> Grid<T>.flatten(transform: (row: Int, col: Int) -> U): List<U> =
