@@ -16,3 +16,4 @@ Solutions for [Advent of Code 2022](https://adventofcode.com/2022) puzzles in [K
 | 8   | 🌳🏚🌳 [Treetop Tree House](https://adventofcode.com/2022/day/8)      | ⭐⭐ [`Day8`](src/main/kotlin/aoc2022/day08.kt)  |
 | 9   | 🐍🐍🐍 [Rope Bridge](https://adventofcode.com/2022/day/9)             | ⭐⭐ [`Day9`](src/main/kotlin/aoc2022/day09.kt)  |
 | 10  | 🖥🟡⚫ [Cathode-Ray Tube](https://adventofcode.com/2022/day/10)        | ⭐⭐ [`Day10`](src/main/kotlin/aoc2022/day10.kt) |
+| 11  | 🐒🎒🐒 [Monkey in the Middle](https://adventofcode.com/2022/day/11)   | ⭐⭐ [`Day11`](src/main/kotlin/aoc2022/day11.kt) |
