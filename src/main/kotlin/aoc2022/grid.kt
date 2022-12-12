@@ -1,15 +1,34 @@
 package aoc2022
 
-class Grid<T>(private val cells: List<List<T>>) {
+import aoc2022.Grid.Cell
+
+class Grid<T>(private val cells: List<List<Cell<T>>>) : Iterable<Cell<T>> {
     val rows = cells.size
     val cols = cells.first().size
 
-    operator fun get(row: Int): List<T> = cells[row]
-    operator fun get(point: Point): T = cells[point.y][point.x]
+    operator fun get(row: Int, col: Int): Cell<T> = cells[row][col]
+    operator fun get(point: Point): Cell<T> = cells[point.y][point.x]
+
+    data class Cell<T>(val value: T, val point: Point)
+
+    override fun iterator(): Iterator<Cell<T>> = GridIterator()
+
+    private inner class GridIterator(private var index: Int = 0) : Iterator<Cell<T>> {
+        override fun hasNext(): Boolean = index < rows * cols
+        override fun next(): Cell<T> = this@Grid[index / cols, index % cols].also { index++ }
+    }
 
     companion object {
-        fun <T> from(lines: List<String>, toCell: (Char) -> T): Grid<T> =
-            Grid(lines.map { line -> line.map { toCell(it) } })
+        fun <T> from(lines: List<String>, transform: (Char, Point) -> T): Grid<T> =
+            Grid(
+                lines.mapIndexed { row, line ->
+                    line.mapIndexed { col, char ->
+                        val point = Point(col, row)
+                        val value = transform(char, point)
+                        Cell(value, point)
+                    }
+                }
+            )
     }
 }
 
@@ -34,17 +53,16 @@ enum class Direction(val x: Int, val y: Int) {
     val point = Point(x, y)
 }
 
-fun <T, U> Grid<T>.flatten(transform: (row: Int, col: Int) -> U): List<U> =
-    (0 until rows).flatMap { row ->
-        (0 until cols).map { col ->
-            transform(row, col)
-        }
-    }
+fun <T> Grid<T>.neighbours(point: Point): List<Cell<T>> =
+    Direction.values()
+        .map { point + it.point }
+        .filter { it.x >= 0 && it.y >= 0 && it.x < cols && it.y < rows }
+        .map { this[it] }
 
 fun <T> Grid<T>.slice(rows: IntRange, cols: IntRange) = Grid(
     rows.map { row ->
         cols.map { col ->
-            this[row][col]
+            this[row, col]
         }
     }
 )

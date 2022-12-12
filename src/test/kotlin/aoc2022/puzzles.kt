@@ -27,6 +27,7 @@ class PuzzleTests : StringSpec({
             TestCase(9, Day9, 88, 36),
             TestCase(10, Day10, 13140, 0),
             TestCase(11, Day11, 10605, 2713310158),
+            TestCase(12, Day12, 31, 29),
         )
     ) { (day, puzzle, answer1, answer2) ->
         val path = Path(EXAMPLE_DIRECTORY) / EXAMPLE_FORMAT.format(day)

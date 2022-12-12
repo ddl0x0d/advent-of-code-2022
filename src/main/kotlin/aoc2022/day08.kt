@@ -12,7 +12,7 @@ object Day8 : Puzzle<Grid<Int>, Int> {
     /**
      * 2-dimensional map with the height of each tree
      */
-    override fun parseInput(lines: List<String>) = Grid.from(lines) { it.digitToInt() }
+    override fun parseInput(lines: List<String>) = Grid.from(lines) { char, _ -> char.digitToInt() }
 
     /**
      * How many trees are visible from outside the grid?
@@ -24,7 +24,7 @@ object Day8 : Puzzle<Grid<Int>, Int> {
     private fun Grid<Int>.treesVisibleInInterior() =
         interiorTreePoints().count { point ->
             Direction.values().firstOrNull { direction ->
-                treesToEdge(point, direction).all { it < get(point) }
+                treesToEdge(point, direction).all { it < get(point).value }
             } != null
         }
 
@@ -34,13 +34,12 @@ object Day8 : Puzzle<Grid<Int>, Int> {
     override fun part2(input: Grid<Int>): Int =
         input.interiorTreePoints().maxOf { point ->
             Direction.values().map { direction ->
-                input.treesToEdge(point, direction).viewingDistance(input[point])
+                input.treesToEdge(point, direction).viewingDistance(input[point].value)
             }.reduce(Int::times)
         }
 
     private fun Grid<Int>.interiorTreePoints(): List<Point> =
-        slice(1 until rows - 1, 1 until cols - 1)
-            .flatten { row, col -> Point(col + 1, row + 1) }
+        slice(1 until rows - 1, 1 until cols - 1).map { it.point }
 
     private fun Grid<Int>.treesToEdge(start: Point, direction: Direction): Sequence<Int> {
         val treesLeft = when (direction) {
@@ -50,7 +49,7 @@ object Day8 : Puzzle<Grid<Int>, Int> {
             LEFT -> start.x
         }
         val vector = Point(direction.x, -direction.y)
-        return generateSequence(start) { it + vector }.drop(1).take(treesLeft).map(::get)
+        return generateSequence(start) { it + vector }.drop(1).take(treesLeft).map(::get).map { it.value }
     }
 
     private fun Sequence<Int>.viewingDistance(tree: Int): Int =
