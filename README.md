@@ -18,3 +18,4 @@ Solutions for [Advent of Code 2022](https://adventofcode.com/2022) puzzles in [K
 | 10  | 🖥🟡⚫ [Cathode-Ray Tube](https://adventofcode.com/2022/day/10)        | ⭐⭐ [`Day10`](src/main/kotlin/aoc2022/day10.kt) |
 | 11  | 🐒🎒🐒 [Monkey in the Middle](https://adventofcode.com/2022/day/11)   | ⭐⭐ [`Day11`](src/main/kotlin/aoc2022/day11.kt) |
 | 12  | ⛰🥾📻 [Hill Climbing Algorithm](https://adventofcode.com/2022/day/12) | ⭐⭐ [`Day12`](src/main/kotlin/aoc2022/day12.kt) |
+| 13  | 🆘📻🆘 [Distress Signal](https://adventofcode.com/2022/day/13)        | ⭐⭐ [`Day13`](src/main/kotlin/aoc2022/day13.kt) |
