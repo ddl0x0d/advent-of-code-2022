@@ -69,6 +69,7 @@ object Day10 : Puzzle<List<Instruction>, Int> {
             }
             println()
         }
+        println()
     }
 
     data class Instruction(val cycles: Int, val increment: Int)
