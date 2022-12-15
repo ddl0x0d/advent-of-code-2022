@@ -28,10 +28,4 @@ object Day4 : Puzzle<List<Pair<IntRange, IntRange>>, Int> {
      */
     override fun part2(input: List<Pair<IntRange, IntRange>>): Int =
         input.count { (elf1, elf2) -> elf1 intersects elf2 }
-
-    private operator fun IntRange.contains(other: IntRange): Boolean =
-        first >= other.first && last <= other.last
-
-    private infix fun IntRange.intersects(other: IntRange): Boolean =
-        last >= other.first && first <= other.last
 }
