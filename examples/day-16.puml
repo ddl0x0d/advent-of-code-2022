@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+'P1       Me = D -> B -> J -> H -> E -> C
+
+'P2       Me =      J -> B -> C
+'P2 Elephant = D ->   -> H ->   -> E
+
+(**AA**) as a #lightgreen
+(BB = 13) as b
+(CC = 2) as c
+(DD = 20) as d
+(EE = 3) as e
+(HH = 22) as h
+(JJ = 21) as j
+
+a -left- b : 1
+a -- d : 1
+a -right- j : 2
+b -- c : 1
+c - d : 1
+d - e : 1
+e -- h : 3
+@enduml
