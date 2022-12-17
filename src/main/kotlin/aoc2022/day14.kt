@@ -83,7 +83,7 @@ object Day14 : Puzzle<List<List<Point>>, Int> {
     private fun print(grid: Grid<Terrain>) {
         val rows = 0 until grid.rows
         val cols = (grid.cols - grid.rows * 2) until grid.cols
-        grid.slice(rows, cols).print { it.char }
+        grid.slice(rows, cols).print { it.value.char }
         println()
     }
 

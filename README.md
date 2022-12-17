@@ -22,3 +22,4 @@ Solutions for [Advent of Code 2022](https://adventofcode.com/2022) puzzles in [K
 | 14  | ⌛⌛⌛ [Regolith Reservoir](https://adventofcode.com/2022/day/14)        | ⭐⭐ [`Day14`](src/main/kotlin/aoc2022/day14.kt) |
 | 15  | 📡📡📡 [Beacon Exclusion Zone](https://adventofcode.com/2022/day/15)  | ⭐⭐ [`Day15`](src/main/kotlin/aoc2022/day15.kt) |
 | 16  | 🌋🐘⚙ [Proboscidea Volcanium](https://adventofcode.com/2022/day/16)   | ⭐⭐ [`Day16`](src/main/kotlin/aoc2022/day16.kt) |
+| 17  | 🐘🕹🧱 [Pyroclastic Flow](https://adventofcode.com/2022/day/17)       | ⭐ [`Day17`](src/main/kotlin/aoc2022/day17.kt)  |

@@ -3,12 +3,24 @@ package aoc2022
 import aoc2022.Grid.Cell
 
 class Grid<T>(private val cells: MutableList<MutableList<Cell<T>>>) : Iterable<Cell<T>> {
-    val rows = cells.size
-    val cols = cells.first().size
+    val rows: Int get() = cells.size
+    val cols: Int get() = cells.first().size
 
     operator fun contains(point: Point): Boolean = point.x >= 0 && point.y >= 0 && point.x < cols && point.y < rows
+
+    fun expand(rows: Int, newCell: () -> T) {
+        repeat(rows) {
+            cells += MutableList(cols) { col -> Cell(newCell(), Point(col, this.rows)) }
+        }
+    }
+
     operator fun get(row: Int, col: Int): Cell<T> = cells[row][col]
     operator fun get(point: Point): Cell<T> = cells[point.y][point.x]
+
+    operator fun set(row: Int, col: Int, value: T) {
+        cells[row][col].value = value
+    }
+
     operator fun set(point: Point, value: T) {
         cells[point.y][point.x].value = value
     }
@@ -74,11 +86,12 @@ fun <T> Grid<T>.neighbours(point: Point): List<Cell<T>> =
         .filter { it.x >= 0 && it.y >= 0 && it.x < cols && it.y < rows }
         .map { this[it] }
 
-fun <T> Grid<T>.print(toChar: (T) -> Char) {
+fun <T> Grid<T>.print(toChar: (Cell<T>) -> Char) {
     (0 until rows).map { row ->
         (0 until cols).map { col ->
-            print(toChar(this[row, col].value))
+            print(toChar(this[row, col]))
         }
+        print(" $row")
         println()
     }
 }
@@ -86,7 +99,7 @@ fun <T> Grid<T>.print(toChar: (T) -> Char) {
 fun <T> Grid<T>.slice(rows: IntRange, cols: IntRange) = Grid(
     rows.mapTo(mutableListOf()) { row ->
         cols.mapTo(mutableListOf()) { col ->
-            this[row, col]
+            Cell(this[row, col].value, Point(col, row))
         }
     }
 )
