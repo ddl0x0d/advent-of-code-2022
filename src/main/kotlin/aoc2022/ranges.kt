@@ -3,6 +3,8 @@ package aoc2022
 import kotlin.math.max
 import kotlin.math.min
 
+val IntRange.size: Int get() = last - first + 1
+
 operator fun IntRange.contains(other: IntRange): Boolean =
     first >= other.first && last <= other.last
 

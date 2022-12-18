@@ -1,6 +1,7 @@
 package aoc2022
 
 import aoc2022.Direction.*
+import aoc2022.Point.Companion.ONE
 
 /**
  * [Day 8: Treetop Tree House](https://adventofcode.com/2022/day/8)
@@ -12,14 +13,14 @@ object Day8 : Puzzle<Grid<Int>, Int> {
     /**
      * 2-dimensional map with the height of each tree
      */
-    override fun parseInput(lines: List<String>) = Grid.from(lines) { char, _ -> char.digitToInt() }
+    override fun parseInput(lines: List<String>) = Grid.read(lines) { char, _ -> char.digitToInt() }
 
     /**
      * How many trees are visible from outside the grid?
      */
     override fun part1(input: Grid<Int>): Int = input.treesVisibleOnEdge() + input.treesVisibleInInterior()
 
-    private fun Grid<Int>.treesVisibleOnEdge(): Int = 2 * (rows + cols - 2)
+    private fun Grid<Int>.treesVisibleOnEdge(): Int = 2 * (size.x + size.y - 2)
 
     private fun Grid<Int>.treesVisibleInInterior() =
         interiorTreePoints().count { point ->
@@ -39,13 +40,13 @@ object Day8 : Puzzle<Grid<Int>, Int> {
         }
 
     private fun Grid<Int>.interiorTreePoints(): List<Point> =
-        slice(1 until rows - 1, 1 until cols - 1).map { it.point }
+        slice(1 until size.y - 1, 1 until size.x - 1).map { it.point + ONE }
 
     private fun Grid<Int>.treesToEdge(start: Point, direction: Direction): Sequence<Int> {
         val treesLeft = when (direction) {
             UP -> start.y
-            RIGHT -> cols - start.x - 1
-            DOWN -> rows - start.y - 1
+            RIGHT -> size.x - start.x - 1
+            DOWN -> size.y - start.y - 1
             LEFT -> start.x
         }
         val vector = Point(direction.x, -direction.y)

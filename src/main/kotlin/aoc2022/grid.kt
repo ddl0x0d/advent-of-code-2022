@@ -1,73 +1,92 @@
 package aoc2022
 
-import aoc2022.Grid.Cell
+import aoc2022.IGrid.Cell
 
-class Grid<T>(private val cells: MutableList<MutableList<Cell<T>>>) : Iterable<Cell<T>> {
-    val rows: Int get() = cells.size
-    val cols: Int get() = cells.first().size
 
-    operator fun contains(point: Point): Boolean = point.x >= 0 && point.y >= 0 && point.x < cols && point.y < rows
+abstract class IGrid<P : IPoint<P>, T>(val size: P, val transform: (P) -> T) : Iterable<Cell<T, P>> {
 
-    fun expand(rows: Int, newCell: () -> T) {
-        repeat(rows) {
-            cells += MutableList(cols) { col -> Cell(newCell(), Point(col, this.rows)) }
+    private val cells: List<Cell<T, P>> =
+        List(size.coordinates.reduce(Int::times)) {
+            val point = indexToPoint(it)
+            Cell(transform(point), point)
         }
+
+    operator fun contains(point: P): Boolean =
+        (point zip size).all { (p, s) -> p in (0 until s) }
+
+    fun getOrNull(point: P): Cell<T, P>? =
+        if (contains(point)) get(point) else null
+
+    operator fun get(point: P): Cell<T, P> = cells[pointToIndex(point)]
+
+    operator fun set(point: P, value: T) {
+        get(point).value = value
     }
 
-    operator fun get(row: Int, col: Int): Cell<T> = cells[row][col]
-    operator fun get(point: Point): Cell<T> = cells[point.y][point.x]
+    override fun iterator(): Iterator<Cell<T, P>> = cells.iterator()
 
-    operator fun set(row: Int, col: Int, value: T) {
-        cells[row][col].value = value
-    }
+    abstract fun indexToPoint(index: Int): P
+    abstract fun pointToIndex(point: P): Int
 
-    operator fun set(point: Point, value: T) {
-        cells[point.y][point.x].value = value
-    }
+    data class Cell<T, P>(var value: T, val point: P)
+}
 
-    data class Cell<T>(var value: T, val point: Point)
+class Grid<T>(size: Point, transform: (Point) -> T) : IGrid<Point, T>(size, transform) {
 
-    override fun iterator(): Iterator<Cell<T>> = GridIterator()
+    constructor(rows: Int, cols: Int, transform: (Point) -> T) : this(Point(cols, rows), transform)
 
-    private inner class GridIterator(private var index: Int = 0) : Iterator<Cell<T>> {
-        override fun hasNext(): Boolean = index < rows * cols
-        override fun next(): Cell<T> = this@Grid[index / cols, index % cols].also { index++ }
-    }
+    override fun indexToPoint(index: Int) = Point(index % size.x, index / size.x)
+    override fun pointToIndex(point: Point): Int = point.let { (x, y) -> y * size.x + x }
 
     companion object {
-        fun <T> from(lines: List<String>, transform: (Char, Point) -> T): Grid<T> =
-            Grid(
-                lines.mapIndexedTo(mutableListOf()) { row, line ->
-                    line.mapIndexedTo(mutableListOf()) { col, char ->
-                        val point = Point(col, row)
-                        val value = transform(char, point)
-                        Cell(value, point)
-                    }
-                }
-            )
-
-        fun <T> from(rows: Int, cols: Int, transform: (Point) -> T): Grid<T> =
-            Grid(
-                MutableList(rows) { row ->
-                    MutableList(cols) { col ->
-                        val point = Point(col, row)
-                        Cell(transform(point), point)
-                    }
-                }
-            )
+        fun <T> read(lines: List<String>, transform: (Char, Point) -> T) =
+            Grid(lines.size, lines.first().length) { point ->
+                val (x, y) = point
+                val char = lines[y][x]
+                transform(char, point)
+            }
     }
 }
 
-data class Point(val x: Int, val y: Int) {
+class Grid3D<T>(size: Point3D, transform: (Point3D) -> T) : IGrid<Point3D, T>(size, transform) {
 
-    operator fun plus(other: Point) = Point(x + other.x, y + other.y)
-    operator fun minus(other: Point) = Point(x - other.x, y - other.y)
-    operator fun times(times: Int) = Point(x * times, y * times)
+    override fun indexToPoint(index: Int) = Point3D(
+        x = index / (size.y * size.z),
+        y = index % (size.y * size.z) / size.z,
+        z = index % size.z
+    )
 
-    fun map(transform: (Int) -> Int) = Point(transform(x), transform(y))
+    override fun pointToIndex(point: Point3D): Int =
+        point.let { (x, y, z) -> x * size.y * size.z + y * size.z + z }
+}
+
+interface IPoint<T : IPoint<T>> {
+    val coordinates: List<Int>
+
+    operator fun plus(other: T): T = merge(other, Int::plus)
+    operator fun minus(other: T): T = merge(other, Int::minus)
+    operator fun times(times: Int): T = map { it * times }
+
+    fun map(transform: (Int) -> Int): T = create(coordinates.map(transform))
+
+    fun merge(other: T, merge: (Int, Int) -> Int): T = create(zip(other).map { (a, b) -> merge(a, b) })
+
+    infix fun zip(other: T): List<Pair<Int, Int>> = coordinates zip other.coordinates
+
+    fun create(coordinates: List<Int>): T
+}
+
+data class Point(val x: Int, val y: Int) : IPoint<Point> {
+
+    override val coordinates = listOf(x, y)
+
+    override fun create(coordinates: List<Int>) = coordinates.let { (x, y) -> Point(x, y) }
+
+    fun neighbours(): List<Point> = Direction.values().map { this + it.point }
 
     companion object {
         val ZERO = Point(0, 0)
+        val ONE = Point(1, 1)
     }
 }
 
@@ -80,26 +99,53 @@ enum class Direction(val x: Int, val y: Int) {
     val point = Point(x, y)
 }
 
-fun <T> Grid<T>.neighbours(point: Point): List<Cell<T>> =
-    Direction.values()
-        .map { point + it.point }
-        .filter { it.x >= 0 && it.y >= 0 && it.x < cols && it.y < rows }
-        .map { this[it] }
+data class Point3D(val x: Int, val y: Int, val z: Int) : IPoint<Point3D> {
 
-fun <T> Grid<T>.print(toChar: (Cell<T>) -> Char) {
-    (0 until rows).map { row ->
-        (0 until cols).map { col ->
-            print(toChar(this[row, col]))
-        }
-        print(" $row")
-        println()
+    override val coordinates = listOf(x, y, z)
+
+    override fun create(coordinates: List<Int>) = coordinates.let { (x, y, z) -> Point3D(x, y, z) }
+
+    fun neighbours(): List<Point3D> = unitVectors.map { this + it }
+
+    companion object {
+
+        val ZERO = Point3D(0, 0, 0)
+        val ONE = Point3D(1, 1, 1)
+
+        val unitVectors = listOf(
+            Point3D(-1, 0, 0),
+            Point3D(1, 0, 0),
+            Point3D(0, -1, 0),
+            Point3D(0, 1, 0),
+            Point3D(0, 0, -1),
+            Point3D(0, 0, 1),
+        )
     }
 }
 
-fun <T> Grid<T>.slice(rows: IntRange, cols: IntRange) = Grid(
-    rows.mapTo(mutableListOf()) { row ->
-        cols.mapTo(mutableListOf()) { col ->
-            Cell(this[row, col].value, Point(col, row))
+fun <T> Grid<T>.neighbours(point: Point): List<Cell<T, Point>> =
+    point.neighbours().filter { contains(it) }.map { get(it) }
+
+fun <T> Grid<T>.expand(rows: Int, newCell: () -> T): Grid<T> =
+    Grid(size + Point(0, rows)) {
+        if (it in this) {
+            this[it].value
+        } else {
+            newCell()
         }
     }
-)
+
+fun <T> Grid<T>.slice(rows: IntRange, cols: IntRange): Grid<T> {
+    val offset = Point(cols.first, rows.first)
+    return Grid(rows.size, cols.size) { this[it + offset].value }
+}
+
+fun <T> Grid<T>.print(transform: (Cell<T, Point>) -> Char) {
+    forEach { cell ->
+        print(transform(cell))
+        if (cell.point.x == size.x - 1) {
+            print(" ${cell.point.y}")
+            println()
+        }
+    }
+}

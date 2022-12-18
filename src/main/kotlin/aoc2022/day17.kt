@@ -37,7 +37,7 @@ object Day17 : Puzzle<List<Direction>, Long> {
 
     private fun towerHeight(input: List<Direction>, rocks: Long): Long {
         val shapes = Shape.values()
-        val chamber = Grid.from(1, CHAMBER_WIDTH) { ROCK }
+        var chamber = Grid(1, CHAMBER_WIDTH) { ROCK }
         var towerHeight = 0
         var shapeIndex = 0
         var jetIndex = 0
@@ -66,8 +66,8 @@ object Day17 : Puzzle<List<Direction>, Long> {
             shapeIndex %= shapes.size
             val rockStartY = towerHeight + ROCK_START_Y_OFFSET + 1
             val rock = Rock(shape, bottomLeft = Point(ROCK_START_X, rockStartY))
-            if (chamber.rows <= rock.topRight.y) {
-                chamber.expand(rock.topRight.y - chamber.rows + 1) { AIR }
+            if (chamber.size.y <= rock.topRight.y) {
+                chamber = chamber.expand(rock.topRight.y - chamber.size.y + 1) { AIR }
             }
             //print("Rock #$counter = $shape", chamber, rock)
             do {
@@ -113,7 +113,7 @@ object Day17 : Puzzle<List<Direction>, Long> {
 
     data class Rock(val shape: Shape, var bottomLeft: Point) {
 
-        val topRight: Point get() = Point(bottomLeft.x + shape.grid.cols - 1, bottomLeft.y + shape.grid.rows - 1)
+        val topRight: Point get() = Point(bottomLeft.x + shape.grid.size.x - 1, bottomLeft.y + shape.grid.size.y - 1)
 
         fun tryMove(jet: Direction, chamber: Grid<Terrain>): Boolean =
             canMove(jet, chamber).also { can ->
@@ -143,7 +143,7 @@ object Day17 : Puzzle<List<Direction>, Long> {
         VERTICAL("@\n@\n@\n@"),
         SQUARE("@@\n@@");
 
-        val grid: Grid<Terrain> = Grid.from(shape.trimIndent().lines()) { char, _ -> Terrain.from(char) }
+        val grid: Grid<Terrain> = Grid.read(shape.trimIndent().lines()) { char, _ -> Terrain.from(char) }
     }
 
     enum class Terrain(val char: Char) {

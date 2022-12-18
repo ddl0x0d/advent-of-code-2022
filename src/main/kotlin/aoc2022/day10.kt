@@ -7,7 +7,7 @@ import aoc2022.Day10.Instruction
  */
 object Day10 : Puzzle<List<Instruction>, Int> {
 
-    override val name = "🖥🟡⚫ Cathode-Ray Tube"
+    override val name = "🖥🟨⬛ Cathode-Ray Tube"
 
     private const val NOOP = "noop"
     private const val ADD_X = "addx "

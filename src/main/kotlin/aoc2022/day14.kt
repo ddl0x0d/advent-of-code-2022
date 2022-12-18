@@ -45,7 +45,7 @@ object Day14 : Puzzle<List<List<Point>>, Int> {
     }
 
     private fun grid(rows: Int, cols: Int, paths: List<List<Point>>): Grid<Terrain> =
-        Grid.from(rows, cols) { AIR }.also { grid ->
+        Grid(rows, cols) { AIR }.also { grid ->
             paths.forEach { path ->
                 path.windowed(2).forEach { (from, to) ->
                     val vector = to - from
@@ -67,8 +67,7 @@ object Day14 : Puzzle<List<List<Point>>, Int> {
                 sand = next
                 next = sandDirections
                     .map { sand + it }
-                    .filter { it in grid }
-                    .firstOrNull { grid[it].value == AIR }
+                    .firstOrNull { grid.getOrNull(it)?.value == AIR }
             }
             if (stop(sand)) {
                 break
@@ -81,8 +80,8 @@ object Day14 : Puzzle<List<List<Point>>, Int> {
     }
 
     private fun print(grid: Grid<Terrain>) {
-        val rows = 0 until grid.rows
-        val cols = (grid.cols - grid.rows * 2) until grid.cols
+        val rows = 0 until grid.size.y
+        val cols = (grid.size.x - grid.size.y * 2) until grid.size.x
         grid.slice(rows, cols).print { it.value.char }
         println()
     }

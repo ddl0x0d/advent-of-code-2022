@@ -7,15 +7,12 @@ import kotlin.math.absoluteValue
 /**
  * [Day 15: Beacon Exclusion Zone](https://adventofcode.com/2022/day/15)
  */
-object Day15 : Puzzle<List<Reading>, Long> {
+class Day15(val part1: Int, val part2: Int) : Puzzle<List<Reading>, Long> {
 
     override val name = "📡📡📡 Beacon Exclusion Zone"
 
-    private const val PART_1_PARAM: Int = 10
-    private const val PART_2_PARAM: Int = 20
-
-    private const val INT = "(-?\\d+)"
-    private val pattern = "Sensor at x=$INT, y=$INT: closest beacon is at x=$INT, y=$INT".toRegex()
+    private val int = "(-?\\d+)"
+    private val pattern = "Sensor at x=$int, y=$int: closest beacon is at x=$int, y=$int".toRegex()
 
     override fun parseInput(lines: List<String>): List<Reading> =
         lines.map { line ->
@@ -27,13 +24,13 @@ object Day15 : Puzzle<List<Reading>, Long> {
      * Consult the report from the sensors you just deployed. In the row where y=20, how many positions cannot contain a beacon?
      */
     override fun part1(input: List<Reading>): Long =
-        rowCoverage(PART_1_PARAM, input).sumOf { it.last - it.first }.toLong()
+        rowCoverage(part1, input).sumOf { it.last - it.first }.toLong()
 
     /**
      * What is distress beacon tuning frequency?
      */
     override fun part2(input: List<Reading>): Long =
-        (0 until PART_2_PARAM).asSequence()
+        (0 until part2).asSequence()
             .map { row -> row to rowCoverage(row, input) }
             .first { (_, coverage) -> coverage.size > 1 }
             .let { (y, coverage) ->
