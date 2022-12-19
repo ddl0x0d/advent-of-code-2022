@@ -75,7 +75,7 @@ object Day14 : Puzzle<List<List<Point>>, Int> {
             grid[sand].value = SAND
             atRest++
         }
-        print(grid)
+        //print(grid)
         return atRest
     }
 

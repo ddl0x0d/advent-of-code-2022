@@ -24,7 +24,7 @@ Solutions for [Advent of Code 2022](https://adventofcode.com/2022) puzzles in [K
 | 16  | 🌋🐘⚙ [Proboscidea Volcanium](https://adventofcode.com/2022/day/16)     | ⭐⭐ [`Day16`](src/main/kotlin/aoc2022/day16.kt) |
 | 17  | 🐘🕹🧱 [Pyroclastic Flow](https://adventofcode.com/2022/day/17)         | ⭐⭐ [`Day17`](src/main/kotlin/aoc2022/day17.kt) |
 | 18  | 🌋🌊⚫ [Boiling Boulders](https://adventofcode.com/2022/day/18)          | ⭐⭐ [`Day18`](src/main/kotlin/aoc2022/day18.kt) |
-| 19  | 💎⛏💎 [Not Enough Minerals](https://adventofcode.com/2022/day/19)       | ❌                                              |
+| 19  | 💎⛏💎 [Not Enough Minerals](https://adventofcode.com/2022/day/19)       | ⭐⭐ [`Day19`](src/main/kotlin/aoc2022/day19.kt) |
 | 20  | 🌳🌟🧭 [Grove Positioning System](https://adventofcode.com/2022/day/20) | ⭐⭐ [`Day20`](src/main/kotlin/aoc2022/day20.kt) |
 | 21  | 🐒🧮🐒 [Monkey Math](https://adventofcode.com/2022/day/21)              | ⭐⭐ [`Day21`](src/main/kotlin/aoc2022/day21.kt) |
 | 22  | 🐒🗺🐒 [Monkey Map](https://adventofcode.com/2022/day/22)               | ❌                                              |
