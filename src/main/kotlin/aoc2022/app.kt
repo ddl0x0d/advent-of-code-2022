@@ -11,6 +11,7 @@ val puzzles = listOf(
     Day6, Day7, Day8, Day9, Day10,
     Day11, Day12, Day13, Day14, Day15(10, 20),
     Day16, Day17, Day18, Day19, Day20,
+    Day21,
 )
 
 fun main() {
