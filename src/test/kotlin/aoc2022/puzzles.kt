@@ -37,7 +37,7 @@ class PuzzleTests : StringSpec({
             TestCase(19, Day19, 33, 3_472),
             TestCase(20, Day20, 3, 1_623_178_306),
             TestCase(21, Day21, 152, 301),
-            TestCase(22, Day22, 6_032, 5_031),
+            TestCase(22, Day22(cube1), 6_032, 5_031),
             TestCase(23, Day23, 110, 20),
             TestCase(24, Day24, 18, 54),
             TestCase(25, Day25, "2=-1=0", "AoC 2022 completed!"),

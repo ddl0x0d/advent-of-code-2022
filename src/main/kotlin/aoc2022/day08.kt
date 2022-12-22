@@ -49,8 +49,8 @@ object Day8 : Puzzle<Grid<Int>, Int> {
             DOWN -> size.y - start.y - 1
             LEFT -> start.x
         }
-        val vector = Point(direction.x, -direction.y)
-        return generateSequence(start) { it + vector }.drop(1).take(treesLeft).map(::get).map { it.value }
+        return generateSequence(start) { it + direction.gridPoint }
+            .drop(1).take(treesLeft).map(::get).map { it.value }
     }
 
     private fun Sequence<Int>.viewingDistance(tree: Int): Int =

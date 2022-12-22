@@ -27,7 +27,7 @@ Solutions for [Advent of Code 2022](https://adventofcode.com/2022) puzzles in [K
 | 19  | 💎⛏💎 [Not Enough Minerals](https://adventofcode.com/2022/day/19)       | ⭐⭐ [`Day19`](src/main/kotlin/aoc2022/day19.kt) |
 | 20  | 🌳🌟🧭 [Grove Positioning System](https://adventofcode.com/2022/day/20) | ⭐⭐ [`Day20`](src/main/kotlin/aoc2022/day20.kt) |
 | 21  | 🐒🧮🐒 [Monkey Math](https://adventofcode.com/2022/day/21)              | ⭐⭐ [`Day21`](src/main/kotlin/aoc2022/day21.kt) |
-| 22  | 🐒🗺🐒 [Monkey Map](https://adventofcode.com/2022/day/22)               | ❌                                              |
+| 22  | 🐒🗺🐒 [Monkey Map](https://adventofcode.com/2022/day/22)               | ⭐⭐ [`Day22`](src/main/kotlin/aoc2022/day22.kt) |
 | 23  | 🌱🧝🌱 [Unstable Diffusion](https://adventofcode.com/2022/day/23)       | ⭐⭐ [`Day23`](src/main/kotlin/aoc2022/day23.kt) |
 | 24  | 🏔❄🏔 [Blizzard Basin](https://adventofcode.com/2022/day/24)            | ⭐⭐ [`Day24`](src/main/kotlin/aoc2022/day24.kt) |
 | 25  | 🎈🎈🎈 [Full of Hot Air](https://adventofcode.com/2022/day/25)          | ⭐⭐ [`Day25`](src/main/kotlin/aoc2022/day25.kt) |
