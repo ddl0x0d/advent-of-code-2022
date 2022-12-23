@@ -97,6 +97,7 @@ enum class Direction(val x: Int, val y: Int) {
     LEFT(-1, 0);
 
     val point = Point(x, y)
+    val gridPoint = Point(x, -y)
 }
 
 data class Point3D(val x: Int, val y: Int, val z: Int) : IPoint<Point3D> {
@@ -126,12 +127,12 @@ data class Point3D(val x: Int, val y: Int, val z: Int) : IPoint<Point3D> {
 fun <T> Grid<T>.neighbours(point: Point): List<Cell<T, Point>> =
     point.neighbours().filter { contains(it) }.map { get(it) }
 
-fun <T> Grid<T>.expand(rows: Int, newCell: () -> T): Grid<T> =
-    Grid(size + Point(0, rows)) {
+fun <T> Grid<T>.expand(size: Point, newCell: (Point) -> T): Grid<T> =
+    Grid(size) {
         if (it in this) {
             this[it].value
         } else {
-            newCell()
+            newCell(it)
         }
     }
 

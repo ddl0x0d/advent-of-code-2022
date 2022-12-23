@@ -67,7 +67,7 @@ object Day17 : Puzzle<List<Direction>, Long> {
             val rockStartY = towerHeight + ROCK_START_Y_OFFSET + 1
             val rock = Rock(shape, bottomLeft = Point(ROCK_START_X, rockStartY))
             if (chamber.size.y <= rock.topRight.y) {
-                chamber = chamber.expand(rock.topRight.y - chamber.size.y + 1) { AIR }
+                chamber = chamber.expand(Point(CHAMBER_WIDTH, rock.topRight.y + 1)) { AIR }
             }
             //print("Rock #$counter = $shape", chamber, rock)
             do {

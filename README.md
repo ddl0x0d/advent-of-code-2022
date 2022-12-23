@@ -27,3 +27,5 @@ Solutions for [Advent of Code 2022](https://adventofcode.com/2022) puzzles in [K
 | 19  | 💎⛏💎 [Not Enough Minerals](https://adventofcode.com/2022/day/19)       | ❌                                              |
 | 20  | 🌳🌟🧭 [Grove Positioning System](https://adventofcode.com/2022/day/20) | ⭐⭐ [`Day20`](src/main/kotlin/aoc2022/day20.kt) |
 | 21  | 🐒🧮🐒 [Monkey Math](https://adventofcode.com/2122/day/21)              | ⭐⭐ [`Day21`](src/main/kotlin/aoc2022/day21.kt) |
+| 22  | 🐒🗺🐒 [Monkey Map](https://adventofcode.com/2122/day/22)               | ❌                                              |
+| 23  | 🌱🧝🌱 [Unstable Diffusion](https://adventofcode.com/2123/day/23)       | ⭐⭐ [`Day23`](src/main/kotlin/aoc2022/day23.kt) |
