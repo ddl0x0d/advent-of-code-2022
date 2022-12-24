@@ -21,9 +21,9 @@ object Day12 : Puzzle<Graph<Cell<Char, Point>, Int>, Int> {
             }
         }
         val steps = grid.flatMap { cell ->
-            grid.neighbours(cell.point)
-                .filter { it.value <= cell.value || it.value == cell.value + 1 }
-                .map { cell to it }
+            grid.neighbours(cell.point) {
+                it.value <= cell.value || it.value == cell.value + 1
+            }.map { cell to it }
         }
         return Graph.from(steps) { (from, to) -> Triple(from, to, 1) }
     }

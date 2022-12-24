@@ -65,6 +65,7 @@ interface IPoint<T : IPoint<T>> {
 
     operator fun plus(other: T): T = merge(other, Int::plus)
     operator fun minus(other: T): T = merge(other, Int::minus)
+    operator fun times(other: T): T = merge(other, Int::times)
     operator fun times(times: Int): T = map { it * times }
 
     fun map(transform: (Int) -> Int): T = create(coordinates.map(transform))
@@ -124,8 +125,8 @@ data class Point3D(val x: Int, val y: Int, val z: Int) : IPoint<Point3D> {
     }
 }
 
-fun <T> Grid<T>.neighbours(point: Point): List<Cell<T, Point>> =
-    point.neighbours().filter { contains(it) }.map { get(it) }
+fun <T> Grid<T>.neighbours(point: Point, predicate: (Cell<T, Point>) -> Boolean = { true }): List<Cell<T, Point>> =
+    point.neighbours().filter { contains(it) && predicate(this[it]) }.map { get(it) }
 
 fun <T> Grid<T>.expand(size: Point, newCell: (Point) -> T): Grid<T> =
     Grid(size) {
